@@ -134,6 +134,9 @@ GEM
     omniauth-oauth2 (1.8.0)
       oauth2 (>= 1.4, < 3)
       omniauth (~> 2.0)
+    omniauth-rails_csrf_protection (1.0.1)
+      actionpack (>= 4.2)
+      omniauth (~> 2.0)
     public_suffix (5.0.0)
     puma (3.12.6)
     racc (1.6.0)
@@ -250,6 +253,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
+  omniauth-rails_csrf_protection
   puma (~> 3.11)
   rails (~> 5.2.8, >= 5.2.8.1)
   rspotify

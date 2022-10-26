@@ -17,3 +17,6 @@ module TestSporify
     # the framework and any gems in your application.
   end
 end
+
+RSpotify.authenticate("95a47d6004214969aceb289427073c85", "2e6d0e05e89e481194caf0dc38618787")
+
