@@ -1,0 +1,13 @@
+<% require 'rspotify' %>
+
+<% RSpotify.authenticate("95a47d6004214969aceb289427073c85", "2e6d0e05e89e481194caf0dc38618787") %>
+
+
+<% artists = RSpotify::Artist.search('BTS') %>
+<% arctic_monkeys = artists.first %>
+
+<%= arctic_monkeys.genres %>
+
+
+<% mixed = RSpotify::Base.search('Arctic', 'artist, album, track') %>
+<%= mixed %>
