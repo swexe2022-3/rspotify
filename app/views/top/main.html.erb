@@ -1,11 +1,7 @@
 
-<%= link_to 'Sign in with Spotify', '/auth/spotify', method: :post %>
 
 <% artists = RSpotify::Artist.search('BTS') %>
 <% arctic_monkeys = artists.first %>
 
 <%= arctic_monkeys.genres %>
 
-
-<% # mixed = RSpotify::Base.search('BTS', 'artist') %>
-<% #= mixed %>
