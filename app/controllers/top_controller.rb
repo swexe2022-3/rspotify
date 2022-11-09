@@ -4,4 +4,8 @@ class TopController < ApplicationController
     def main
         
     end
+    
+    def top_tracks
+        @spotify_user = RSpotify::User.find(session[:spotify_uid])
+    end
 end

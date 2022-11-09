@@ -1,0 +1,4 @@
+<% @spotify_user.top_tracks(limit: 50, time_range: 'short_term').each_with_index do |track, rank| %>
+    <%= rank+1 %>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/<%= track.id %>?utm_source=generator" width="100%" height="82" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+<% end %>
