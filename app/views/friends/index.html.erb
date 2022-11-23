@@ -14,14 +14,16 @@
 
 <div>
     友達リスト
-        <% if @friends %>
-            <% @friends.each do |f| %>
-            <% friend = User.find_by(spotify_uid: f.friend_uid) %>
-            <%= f.friend_uid %>
-            <%= friend.genre %>
-            <%= friend.energy %>
-            <%= friend.positive %>
-            <hr>
+    <% if not @friends.nil? %>
+        <% @friends.each do |f| %>
+            <% if User.find_by(spotify_uid: f.friend_uid)%>
+                <% friend = User.find_by(spotify_uid: f.friend_uid) %>
+                <%= f.friend_uid %>
+                <%= friend.genre %>
+                <%= friend.positive %>
+                <%= friend.energy %>
+                <hr>
             <% end %>
-        <% end %>    
+        <% end %>
+    <% end %>    
 </div>
