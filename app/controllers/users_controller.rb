@@ -6,4 +6,9 @@ class UsersController < ApplicationController
         session[:spotify_uid] = spotify_user.id
         redirect_to '/top/top_tracks'
     end
+    def create
+        user = User.create(spotify_uid: session[:spotify_uid])
+        user.save
+        redirect_to root_path
+    end
 end

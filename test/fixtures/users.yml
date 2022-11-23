@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  spotify_uid: MyString
+  genre: MyString
+  energy: 1.5
+  positive: 1.5
+
+two:
+  spotify_uid: MyString
+  genre: MyString
+  energy: 1.5
+  positive: 1.5

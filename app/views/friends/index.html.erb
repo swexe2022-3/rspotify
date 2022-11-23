@@ -1,0 +1,27 @@
+<h1>friends list</h1>
+<div>
+    MY UID
+    <%= session[:spotify_uid] %>
+</div>
+
+<div>
+    友達を追加
+    <%= form_with model: @friend do |form| %>
+      <%= form.text_field :friend_uid %>
+      <%= form.submit %>
+    <% end %>
+</div>
+
+<div>
+    友達リスト
+        <% if @friends %>
+            <% @friends.each do |f| %>
+            <% friend = User.find_by(spotify_uid: f.friend_uid) %>
+            <%= f.friend_uid %>
+            <%= friend.genre %>
+            <%= friend.energy %>
+            <%= friend.positive %>
+            <hr>
+            <% end %>
+        <% end %>    
+</div>

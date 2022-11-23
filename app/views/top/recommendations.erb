@@ -1,0 +1,9 @@
+
+<% @recommendations.tracks.each do |track| %>
+    <% music = RSpotify.get("https://api.spotify.com/v1/audio-features/#{track.id}") %>
+    <div>
+        name: <%= track.name %>
+        energy: <%= music["energy"] %>
+        <%= RSpotify.get("https://api.spotify.com/v1/tracks/#{track.id}")["artists"] %>
+    </div>
+<% end %>
