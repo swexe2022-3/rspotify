@@ -11,19 +11,22 @@
       <%= form.submit %>
     <% end %>
 </div>
-
 <div>
     友達リスト
+</div>
+<hr>
+<div>
+    
     <% if not @friends.nil? %>
         <% @friends.each do |f| %>
-            <% if User.find_by(spotify_uid: f.friend_uid)%>
-                <% friend = User.find_by(spotify_uid: f.friend_uid) %>
                 <%= f.friend_uid %>
-                <%= friend.genre %>
-                <%= friend.positive %>
-                <%= friend.energy %>
+                <% if User.find_by(spotify_uid: f.friend_uid)%>
+                    <% friend = User.find_by(spotify_uid: f.friend_uid) %>
+                    <%= friend.genre %>
+                    <%= friend.positive %>
+                    <%= friend.energy %>
+                <% end %>
                 <hr>
-            <% end %>
         <% end %>
     <% end %>    
 </div>

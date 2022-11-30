@@ -4,6 +4,5 @@
     <div>
         name: <%= track.name %>
         energy: <%= music["energy"] %>
-        <%= RSpotify.get("https://api.spotify.com/v1/tracks/#{track.id}")["artists"] %>
     </div>
 <% end %>

@@ -3,10 +3,8 @@ class TopController < ApplicationController
     RSpotify.authenticate(ENV['SPOTIFY_CLIENT_ID'], ENV['SPOTIFY_SECRET_ID'])
     def main
         if session[:spotify_uid]
-            if User.find_by(spotify_uid: session[:spotify_uid])
-            else
-                render 'signup'
-            end
+            User.find_or_create_by!(spotify_uid: session[:spotify_uid])
+            render 'main'
         else
             render 'login'
         end
