@@ -145,6 +145,7 @@ GEM
     omniauth-rails_csrf_protection (1.0.1)
       actionpack (>= 4.2)
       omniauth (~> 2.0)
+    pg (0.21.0)
     public_suffix (5.0.0)
     puma (3.12.6)
     racc (1.6.0)
@@ -264,6 +265,7 @@ DEPENDENCIES
   jquery-rails
   listen (>= 3.0.5, < 3.2)
   omniauth-rails_csrf_protection
+  pg (= 0.21.0)
   puma (~> 3.11)
   rails (~> 5.2.8, >= 5.2.8.1)
   rspotify
