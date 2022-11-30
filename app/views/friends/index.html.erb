@@ -1,3 +1,6 @@
+<% flash.each do |message_type, message| %>
+    <%= message %>
+<% end %>
 <h1>friends list</h1>
 <div>
     MY UID
@@ -26,6 +29,7 @@
                     <%= friend.positive %>
                     <%= friend.energy %>
                 <% end %>
+                <%= link_to 'del', "/friends/#{f.id}",method: :delete %>
                 <hr>
         <% end %>
     <% end %>    
