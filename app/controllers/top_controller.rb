@@ -18,7 +18,7 @@ class TopController < ApplicationController
             
             audio_feature_data_json = RSpotify.get("https://api.spotify.com/v1/audio-features/#{track.id}")
             sum_energy += audio_feature_data_json["energy"].to_f
-            sum_positive += audio_feature_data_json["positive"].to_f
+            sum_positive += audio_feature_data_json["valence"].to_f
             ary += track.artists.first.genres
             
         end

@@ -6,6 +6,7 @@
         <%= track.name %>
         <% audio_feature_data_json = RSpotify.get("https://api.spotify.com/v1/audio-features/#{track.id}") %>
         energy: <%= audio_feature_data_json["energy"] %>
+        energy: <%= audio_feature_data_json["positive"] %>
         <% ary += track.artists.first.genres %>
         <% @sum_energy += audio_feature_data_json["energy"].to_f %>
         <div>
