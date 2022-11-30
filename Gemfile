@@ -63,5 +63,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'rspotify'
 gem 'omniauth-rails_csrf_protection'
-#rails 環境変数
+# rails 環境変数
 gem 'dotenv-rails'
+# jquery
+gem "jquery-rails" 
