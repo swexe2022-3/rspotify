@@ -1,15 +1,18 @@
 <% @sum_energy = 0 %>
+<% ary = [] %>
 <% @spotify_user.top_tracks(limit: 50, time_range: 'short_term').each_with_index do |track, rank| %>
     <div>    
         <%= rank+1 %>
         <%= track.name %>
-        <% music = RSpotify.get("https://api.spotify.com/v1/audio-features/#{track.id}") %>
-        energy: <%= music["energy"] %>
-        <% @sum_energy += music["energy"].to_f %>
+        <% audio_feature_data_json = RSpotify.get("https://api.spotify.com/v1/audio-features/#{track.id}") %>
+        energy: <%= audio_feature_data_json["energy"] %>
+        <% ary += track.artists.first.genres %>
+        <% @sum_energy += audio_feature_data_json["energy"].to_f %>
         <div>
             <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/<%= track.id %>?utm_source=generator" width="15%" height="82" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
     </div>
 <% end %>
 <% @tracksize = @spotify_user.top_tracks.size() %>
-<%= @sum_energy / @tracksize.round(2) * 100 %>%
+<%= (@sum_energy / @tracksize * 100).round(2) %>%
+<%= ary.group_by(&:itself).max_by{|_, v| v.size}[0] %>
