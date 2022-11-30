@@ -1,0 +1,2 @@
+module MusicRequestsHelper
+end
