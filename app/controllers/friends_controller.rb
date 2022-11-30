@@ -10,13 +10,12 @@ class FriendsController < ApplicationController
         else
             #入力したuidのユーザーがいるか確認
             if User.find_by(spotify_uid: params[:friend][:friend_uid])
-                Friend.create!(uid: session[:spotify_uid], friend_uid: params[:friend][:friend_uid])
+                Friend.create!(uid: session[:spotify_uid], friend_uid: params[:friend][:friend_uid], user_id: User.find_by(spotify_uid: session[:spotify_uid]).id.to_i)
                 redirect_to '/friends',flash: {success: 'Success to add'}
             else 
                 redirect_to '/friends',flash: {fail: 'id not found'}
             end
         end
-
     end
     def destroy
         friend = Friend.find(params[:id])
