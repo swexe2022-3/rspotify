@@ -64,12 +64,11 @@ class TopController < ApplicationController
                     end
                 end
                 result.merge!(r) {|key, v0, v1| v0 + v1}
-                puts result
             rescue NameError
             end
         end
-        result.sort_by { |_, v| v }
-        return result.to_a.slice(0..50)
+        result = result.sort_by { |_, v| v }
+        return result.reverse.slice(0..50)
     end
         
 end
