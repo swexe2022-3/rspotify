@@ -57,13 +57,16 @@ class TopController < ApplicationController
         end
         puts result
         user.friends.each do |f|
-            r = {}
-            if friend = RSpotify::User.find(f.friend_uid)
-                friend.top_tracks(limit: 50, time_range: 'short_term').each_with_index do |track, rank|
-                    r.store(track, 50-rank)
+            begin
+                r = {}
+                if friend = RSpotify::User.find(f.friend_uid)
+                    friend.top_tracks(limit: 50, time_range: 'short_term').each_with_index do |track, rank|
+                        r.store(track, 50-rank)
+                    end
                 end
+                result.merge(r) {|key, v0, v1| v0 + v1}
+            rescue NameError
             end
-            result.merge(r) {|key, v0, v1| v0 + v1}
         end
         result.sort_by { |_, v| v }
         return result.to_a.slice(0..50)
