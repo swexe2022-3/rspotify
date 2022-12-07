@@ -35,8 +35,7 @@ class TopController < ApplicationController
     def top_tracks
         begin
             @spotify_user = RSpotify::User.find(session[:spotify_uid])
-            puts "----"
-            puts get_groups_top_tracks(User.find_by(spotify_uid: session[:spotify_uid]))
+            @group_tracks = get_groups_top_tracks(User.find_by(spotify_uid: session[:spotify_uid]))
         rescue NameError
             render 'login'
         end
@@ -56,15 +55,16 @@ class TopController < ApplicationController
             result.store(track.id, 50-rank)
         end
         puts result
-        user.friends.each do |f|
+        Friend.where(uid: session[:spotify_uid]).each do |f|
             begin
                 r = {}
                 if friend = RSpotify::User.find(f.friend_uid)
                     friend.top_tracks(limit: 50, time_range: 'short_term').each_with_index do |track, rank|
-                        r.store(track, 50-rank)
+                        r.store(track.id, 50-rank)
                     end
                 end
-                result.merge(r) {|key, v0, v1| v0 + v1}
+                result.merge!(r) {|key, v0, v1| v0 + v1}
+                puts result
             rescue NameError
             end
         end
