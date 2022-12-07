@@ -1,6 +1,7 @@
 <% @sum_energy = 0 %>
 <% ary = [] %>
-<% @spotify_user.top_tracks(limit: 50, time_range: 'short_term').each_with_index do |track, rank| %>
+<%= link_to "プレイリストとして保存", {controller: "top", action: "create_mytop_playlist"}, method: :post %>
+<% @my_top_tracks.each_with_index do |track, rank| %>
     <div>    
         <%= rank+1 %>
         <%= track.name %>
@@ -14,6 +15,8 @@
         </div>
     </div>
 <% end %>
+
+<%= link_to "プレイリストとして保存", {controller: "top", action: "create_grouptop_playlist"}, method: :post %>
 <% @group_tracks.each_with_index do |track, rank| %>
     <div>
         <%= rank+1 %>

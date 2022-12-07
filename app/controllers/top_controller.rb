@@ -35,6 +35,7 @@ class TopController < ApplicationController
     def top_tracks
         begin
             @spotify_user = RSpotify::User.find(session[:spotify_uid])
+            @my_top_tracks = @spotify_user.top_tracks(limit: 50, time_range: 'short_term')
             @group_tracks = get_groups_top_tracks(User.find_by(spotify_uid: session[:spotify_uid]))
         rescue NameError
             render 'login'
@@ -69,6 +70,23 @@ class TopController < ApplicationController
         end
         result = result.sort_by { |_, v| v }
         return result.reverse.slice(0..50)
+    end
+    
+    def create_mytop_playlist
+        spotify_user = RSpotify::User.find(session[:spotify_uid])
+        playlist = spotify_user.create_playlist!('Ranking')
+        playlist.add_tracks!(RSpotify::User.find(session[:spotify_uid]).top_tracks(limit: 50, time_range: 'short_term'))
+        puts "OK"
+    end
+    
+    def create_grouptop_playlist
+        playlist = spotify_user.create_playlist!('Group Ranking')
+        tracks = []
+        get_groups_top_tracks(User.find_by(spotify_uid: session[:spotify_uid])).each do |track_id|
+            tracks << RSpotify::Track.find(track_id)
+        end
+        playlist.add_tracks!(tracks)
+        puts "OK"
     end
         
 end

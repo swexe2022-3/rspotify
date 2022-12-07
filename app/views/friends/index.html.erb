@@ -22,7 +22,7 @@
     
     <% if not @friends.nil? %>
         <% @friends.each do |f| %>
-                <%= f.friend_uid %>
+                <%= RSpotify::User.find(f.friend_uid).display_name %>
                 <% if User.find_by(spotify_uid: f.friend_uid)%>
                     <% friend = User.find_by(spotify_uid: f.friend_uid) %>
                     <%= friend.genre %>
