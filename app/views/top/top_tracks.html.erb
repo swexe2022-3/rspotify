@@ -13,6 +13,15 @@
         </div>
     </div>
 <% end %>
+<% @group_tracks.each_with_index do |track, rank| %>
+    <div>
+        <%= rank+1 %>
+        points: <%= track[1] %>
+        <div>
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/<%= track[0] %>?utm_source=generator" width="15%" height="82" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+    </div>
+<% end %>
 <% @tracksize = @spotify_user.top_tracks.size() %>
 <%= (@sum_energy / @tracksize * 100).round(2) %>%
 <%= ary.group_by(&:itself).max_by{|_, v| v.size}[0] %>
