@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   get '/top/user_update'
   resources :users
   resources :friends
+  resources :notifications
+  resources :music_requests
 end
