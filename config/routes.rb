@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get '/top/login'
   get '/top/user_update'
   get '/top/form_test'
+  post '/top/top_tracks/mytop', to: 'top#create_mytop_playlist'
+  post '/top/top_tracks/grouptop', to: 'top#create_grouptop_playlist'
   resources :users
   resources :friends
   resources :notifications
