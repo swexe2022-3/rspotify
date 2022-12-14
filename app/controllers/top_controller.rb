@@ -42,7 +42,7 @@ class TopController < ApplicationController
             @spotify_user = RSpotify::User.find(session[:spotify_uid])
             @group_tracks = get_groups_top_tracks(User.find_by(spotify_uid: session[:spotify_uid]))
             @request = MusicRequest.new
-            #リクエスト送るためのfriends
+            #form用のfriends配列　[友達のspotify_uid...]
             @friends = []
             friends = Friend.where(uid: current_user.spotify_uid)
             friends.each do |f|
