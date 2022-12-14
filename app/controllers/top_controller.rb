@@ -1,5 +1,6 @@
+require 'rspotify'
 class TopController < ApplicationController
-    require 'rspotify'
+
     RSpotify.authenticate(ENV['SPOTIFY_CLIENT_ID'], ENV['SPOTIFY_SECRET_ID'])
     def main
         if session[:spotify_uid]
@@ -50,10 +51,15 @@ class TopController < ApplicationController
         
     end
     
-    def get_groups_top_tracks(user)
+    def get_groups_top_tracks(user, get_uri=0)
         result = {}
         RSpotify::User.find(session[:spotify_uid]).top_tracks(limit: 50, time_range: 'short_term').each_with_index do |track, rank|
-            result.store(track.id, 50-rank)
+            
+            if get_uri == 0
+                result.store(track.id, 50-rank)
+            elsif get_uri == 1
+                result.store(track.uri, 50-rank)
+            end
         end
         puts result
         Friend.where(uid: session[:spotify_uid]).each do |f|
@@ -61,7 +67,11 @@ class TopController < ApplicationController
                 r = {}
                 if friend = RSpotify::User.find(f.friend_uid)
                     friend.top_tracks(limit: 50, time_range: 'short_term').each_with_index do |track, rank|
-                        r.store(track.id, 50-rank)
+                        if get_uri == 0
+                            r.store(track.id, 50-rank)
+                        elsif get_uri == 1
+                            r.store(track.uri, 50-rank)
+                        end
                     end
                 end
                 result.merge!(r) {|key, v0, v1| v0 + v1}
@@ -82,8 +92,8 @@ class TopController < ApplicationController
     def create_grouptop_playlist
         spotify_user = RSpotify::User.find(session[:spotify_uid])
         playlist = spotify_user.create_playlist!('Group Ranking')
-        get_groups_top_tracks(User.find_by(spotify_uid: session[:spotify_uid])).each do |track_id|
-            playlist.add_tracks!(RSpotify::Track.find(track_id))
+        get_groups_top_tracks(User.find_by(spotify_uid: session[:spotify_uid]), 1).each do |track_uri|
+            playlist.add_tracks!([track_uri.first.to_s])
         end
         
         puts "OK"
