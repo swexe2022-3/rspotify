@@ -21,9 +21,9 @@ ActiveRecord::Schema.define(version: 2022_11_30_074843) do
   end
 
   create_table "music_requests", force: :cascade do |t|
-    t.string "uid"
-    t.string "request_friend_id"
-    t.string "music_id"
+    t.string "user_spotify_id"
+    t.string "friend_spotify_id"
+    t.string "music_title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
