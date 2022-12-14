@@ -1,0 +1,8 @@
+<% @requests.each do |rq| %>
+    <div>
+        <%= rq.user_spotify_id %>
+        <%= rq.friend_spotify_id %>
+        <%= rq.music_title %>
+        <%= link_to 'del', "/music_requests/#{rq.id}", method: :delete %>
+    </div>
+<% end %>
