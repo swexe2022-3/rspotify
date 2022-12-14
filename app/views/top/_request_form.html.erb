@@ -1,9 +1,9 @@
-<%= form_with model: @request, url: "/music_requests", method: :post do |f| %>
-    <% #友達がいない時は表示されない %>
-    <% if @friends.size != 0 %>
-            <%= f.select :user_spotify_id, @friends %>
-            <%= f.hidden_field :friend_spotify_id, :value => current_user.spotify_uid %>
-            <%= f.hidden_field :music_title, :value => @track.name %>
-            <%= f.submit "友達に曲をリクエスト" %>
+
+<% if not @friends.nil? %>
+    <%= form_with url: "/music_requests", method: :post do |f| %>
+        <% #友達がいない時は表示されない %>
+        <%= f.select :user_spotify_uid, @friends %>
+        <%= f.hidden_field :music_title, :value => @track %>
+        <%= f.submit "友達に曲をリクエスト" %>
     <% end %>
 <% end %>

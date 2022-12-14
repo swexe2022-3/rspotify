@@ -13,17 +13,16 @@
 ActiveRecord::Schema.define(version: 2022_11_30_074843) do
 
   create_table "friends", force: :cascade do |t|
-    t.string "uid"
-    t.string "friend_uid"
+    t.integer "user_id"
+    t.string "f_spotify_uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
   end
 
   create_table "music_requests", force: :cascade do |t|
-    t.string "user_spotify_id"
-    t.string "friend_spotify_id"
+    t.string "f_user_id"
     t.string "music_title"
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

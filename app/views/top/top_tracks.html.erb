@@ -1,5 +1,3 @@
-<% @sum_energy = 0 %>
-<% ary = [] %>
 <%= link_to "プレイリストとして保存", {controller: "top", action: "create_mytop_playlist"}, method: :post %>
 <% @my_top_tracks.each_with_index do |track, rank| %>
     <div>    
@@ -7,29 +5,26 @@
         <%= track.name %>
         <% audio_feature_data_json = RSpotify.get("https://api.spotify.com/v1/audio-features/#{track.id}") %>
         energy: <%= audio_feature_data_json["energy"] %>
-        <% ary += track.artists.first.genres %>
-        <% @sum_energy += audio_feature_data_json["energy"].to_f %>
-        <div>
             <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/<%= track.id %>?utm_source=generator" width="15%" height="82" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        </div>
-        <% #リクエスト用 %>
         <div>
-            <% @track = track %>
+            <% @track = track.name %>
+            <% @friends = Friend.to_uid_array(current_user) %>
             <%= render 'request_form' %>
         </div>
     </div>
 <% end %>
+
 <% #自分と友達のトラックにランクで合わせて表示 %>
 <%= link_to "プレイリストとして保存", {controller: "top", action: "create_grouptop_playlist"}, method: :post %>
-<% @group_tracks.each_with_index do |track, rank| %>
-    <div>
-        <%= rank+1 %>
-        points: <%= track[1] %>
+<% @group_tracks = User.get_groups_top_tracks(current_user) %>
+<% if not @group_tracks.nil? %>
+    <% @group_tracks.each_with_index do |track, rank| %>
         <div>
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/<%= track[0] %>?utm_source=generator" width="15%" height="82" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <%= rank+1 %>
+            points: <%= track[1] %>
+            <div>
+                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/<%= track[0] %>?utm_source=generator" width="15%" height="82" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
         </div>
-    </div>
+    <% end %>
 <% end %>
-<% @tracksize = @spotify_user.top_tracks.size() %>
-<%= (@sum_energy / @tracksize * 100).round(2) %>%
-<%= ary.group_by(&:itself).max_by{|_, v| v.size}[0] %>

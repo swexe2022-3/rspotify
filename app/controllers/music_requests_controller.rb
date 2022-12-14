@@ -1,7 +1,10 @@
 class MusicRequestsController < ApplicationController
     def create
-        MusicRequest.create!(user_spotify_id: params[:user_spotify_id], friend_spotify_id: params[:friend_spotify_id], music_title: params[:music_title])
-        redirect_to "/top_tracks"
+        #リクエストを受けるユーザー
+        user = User.find_by(spotify_uid: params[:user_spotify_uid])
+        mr = MusicRequest.new(f_user_id: current_user.id, music_title: params[:music_title] )
+        user.music_requests << mr
+        redirect_to "/top/top_tracks"
     end
     def destroy 
         MusicRequest.find(params[:id]).destroy

@@ -5,7 +5,6 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       t.string :genre
       t.float :energy
       t.float :positive
-
       t.timestamps
     end
   end
