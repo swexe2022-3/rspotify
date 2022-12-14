@@ -11,12 +11,14 @@
         <div>
             <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/<%= track.id %>?utm_source=generator" width="15%" height="82" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
+        <% #リクエスト用 %>
         <div>
             <% @track = track %>
             <%= render 'request_form' %>
         </div>
     </div>
 <% end %>
+<% #自分と友達のトラックにランクで合わせて表示 %>
 <% @group_tracks.each_with_index do |track, rank| %>
     <div>
         <%= rank+1 %>
