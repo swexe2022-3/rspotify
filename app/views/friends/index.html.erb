@@ -1,16 +1,19 @@
+<% #エラー表示 %>
 <% flash.each do |message_type, message| %>
     <%= message %>
 <% end %>
+
 <h1>friends list</h1>
 <div>
     MY UID
-    <%= session[:spotify_uid] %>
+    <%= current_user.spotify_uid %>
 </div>
 
 <div>
     友達を追加
-    <%= form_with model: @friend do |form| %>
-      <%= form.text_field :friend_uid %>
+    <%= form_with(model: @friend, local: true) do |form| %>
+      <%#= form.select :f_spotify_uid, @users %>
+      <%= form.text_field :f_spotify_uid %>
       <%= form.submit %>
     <% end %>
 </div>
@@ -22,13 +25,14 @@
     
     <% if not @friends.nil? %>
         <% @friends.each do |f| %>
-                <%= RSpotify::User.find(f.friend_uid).display_name %>
-                <% if User.find_by(spotify_uid: f.friend_uid)%>
-                    <% friend = User.find_by(spotify_uid: f.friend_uid) %>
-                    <%= friend.genre %>
-                    <%= friend.positive %>
-                    <%= friend.energy %>
-                <% end %>
+                <% friend_spotify_uid = f.f_spotify_uid %>
+                <div>
+                    <%= RSpotify::User.find(friend_spotify_uid).display_name %>
+                </div>
+                <% friend = User.find_by(spotify_uid: friend_spotify_uid) %>
+                <%= friend.genre %>
+                <%= friend.positive %>
+                <%= friend.energy %>
                 <%= link_to 'del', "/friends/#{f.id}",method: :delete %>
                 <hr>
         <% end %>
