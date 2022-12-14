@@ -69,7 +69,7 @@ class TopController < ApplicationController
             end
         end
         result = result.sort_by { |_, v| v }
-        return result.reverse.slice(0..50)
+        return result.reverse.slice(0..49)
     end
     
     def create_mytop_playlist
@@ -80,12 +80,12 @@ class TopController < ApplicationController
     end
     
     def create_grouptop_playlist
+        spotify_user = RSpotify::User.find(session[:spotify_uid])
         playlist = spotify_user.create_playlist!('Group Ranking')
-        tracks = []
         get_groups_top_tracks(User.find_by(spotify_uid: session[:spotify_uid])).each do |track_id|
-            tracks << RSpotify::Track.find(track_id)
+            playlist.add_tracks!(RSpotify::Track.find(track_id))
         end
-        playlist.add_tracks!(tracks)
+        
         puts "OK"
     end
         
