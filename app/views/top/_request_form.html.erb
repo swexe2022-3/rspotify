@@ -4,6 +4,6 @@
         <% #友達がいない時は表示されない %>
         <%= f.select :user_spotify_uid, @friends %>
         <%= f.hidden_field :music_title, :value => @track %>
-        <%= f.submit "友達に曲をリクエスト" %>
+        <%= f.submit "これ聞いて！" %>
     <% end %>
 <% end %>
