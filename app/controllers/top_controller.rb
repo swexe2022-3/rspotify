@@ -28,8 +28,8 @@ class TopController < ApplicationController
             #@friends = current_user.friends.to_uid_array
             @friends = Friend.all
             @group_tracks = User.get_groups_top_tracks(current_user)
-        #rescue NameError
-        #    render 'login'
+        rescue NameError
+            redirect_to '/auth/spotify'
         rescue NoMethodError
             
         end
@@ -45,7 +45,7 @@ class TopController < ApplicationController
     def create_grouptop_playlist
         spotify_user = RSpotify::User.find(session[:spotify_uid])
         playlist = spotify_user.create_playlist!('Group Ranking')
-        get_groups_top_tracks(User.find_by(spotify_uid: session[:spotify_uid]), 1).each do |track_uri|
+        User.get_groups_top_tracks(current_user, 1).each do |track_uri|
             playlist.add_tracks!([track_uri.first.to_s])
         end
         
