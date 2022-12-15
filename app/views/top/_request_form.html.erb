@@ -1,5 +1,5 @@
 
-<% if not @friends.nil? %>
+<% if not @friends.size == 0 %>
     <%= form_with url: "/music_requests", method: :post do |f| %>
         <% #友達がいない時は表示されない %>
         <%= f.select :user_spotify_uid, @friends %>
