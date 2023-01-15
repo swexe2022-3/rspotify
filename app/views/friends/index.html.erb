@@ -12,7 +12,7 @@
         <%= form_with model: @friend do |form| %>
         <div class="form-row m-3">
             <div class="m-1">友達を追加</div>
-            <%= form.text_field :friend_uid, class: "form-control col-3 bg-secondary border-primary" %>
+            <%= form.text_field :f_spotify_uid, class: "form-control col-3 bg-secondary border-primary" %>
             <%= form.submit "+", class: "btn btn-outline-primary rounded-circle bg-secondary ml-1" %>
         </div>
         <% end %>
@@ -31,9 +31,9 @@
             <% if not @friends.nil? %>
                 <% @friends.each do |f| %>
                         <tbody>
-                        <th scope="row"><%= RSpotify::User.find(f.friend_uid).display_name %></th>
-                        <% if User.find_by(spotify_uid: f.friend_uid)%>
-                                <% friend = User.find_by(spotify_uid: f.friend_uid) %>
+                        <th scope="row"><%= RSpotify::User.find(f.f_spotify_uid).display_name %></th>
+                        <% if User.find_by(spotify_uid: f.f_spotify_uid)%>
+                                <% friend = User.find_by(spotify_uid: f.f_spotify_uid) %>
                                 <td><%= friend.genre %></td>
                                 <td><%= friend.positive %></td>
                                 <td><%= friend.energy %></td>
