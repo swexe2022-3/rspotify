@@ -1,23 +1,5 @@
-<div>
-    <%= link_to 'recommendations','/top/recommendations', method: :get %>
-</div>
-
-<div>
-    <%= link_to 'top_tracks','/top/top_tracks', method: :get %>
-</div>
-
-<div>
-    <%= link_to 'friends','/friends', method: :get %>  
-</div>
-
-<div>
-    <%= link_to 'Sign in with Spotify', '/auth/spotify', method: :post %>
-</div>
-
-<div>
-    <%= link_to 'my profile', "/users/#{@user.id}", method: :get %>
-</div>
-
-<div>
-    <%= link_to 'notifications', "/notifications/#{@user.id}", method: :get %>
-</div>
+<% if session[:spotify_uid] %>
+    <%= link_to "Let's Check Top Tracks",'/top/top_tracks', method: :get, class: "btn btn-primary m-1" %>
+<% else %>
+    <%= link_to 'Sign in with Spotify', '/auth/spotify', method: :post, class: "btn btn-primary m-1" %>
+<% end %>
