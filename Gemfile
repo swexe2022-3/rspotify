@@ -69,5 +69,10 @@ gem 'dotenv-rails'
 gem "jquery-rails" 
 # pg
 gem 'pg', '0.21.0', group: :production
+
+gem 'bootstrap', '~> 4.3.1'
+
+gem 'jquery-rails'
+
 #chartkick
 gem "chartkick"

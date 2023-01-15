@@ -1,40 +1,47 @@
-<% #エラー表示 %>
-<% flash.each do |message_type, message| %>
-    <%= message %>
-<% end %>
-
-<h1>friends list</h1>
-<div>
-    MY UID
-    <%= current_user.spotify_uid %>
-</div>
-
-<div>
-    友達を追加
-    <%= form_with(model: @friend, local: true) do |form| %>
-      <%#= form.select :f_spotify_uid, @users %>
-      <%= form.text_field :f_spotify_uid %>
-      <%= form.submit %>
+<div class="text-white">
+    <% flash.each do |message_type, message| %>
+        <div class="alert alert-success m-2"><%= message %></div>
     <% end %>
-</div>
-<div>
-    友達リスト
-</div>
-<hr>
-<div>
+    <h1 class="m-5">Friends</h1>
+    <div class="m-4">
+        MY UID
+        <%= session[:spotify_uid] %>
+    </div>
     
-    <% if not @friends.nil? %>
-        <% @friends.each do |f| %>
-                <% friend_spotify_uid = f.f_spotify_uid %>
-                <div>
-                    <%= RSpotify::User.find(friend_spotify_uid).display_name %>
-                </div>
-                <% friend = User.find_by(spotify_uid: friend_spotify_uid) %>
-                <%= friend.genre %>
-                <%= friend.positive %>
-                <%= friend.energy %>
-                <%= link_to 'del', "/friends/#{f.id}",method: :delete %>
-                <hr>
+    <div>
+        <%= form_with model: @friend do |form| %>
+        <div class="form-row m-3">
+            <div class="m-1">友達を追加</div>
+            <%= form.text_field :friend_uid, class: "form-control col-3 bg-secondary border-primary" %>
+            <%= form.submit "+", class: "btn btn-outline-primary rounded-circle bg-secondary ml-1" %>
+        </div>
         <% end %>
-    <% end %>    
+    </div>
+    <div class="m-3">
+        <table class="table text-white border">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Genre</th>
+                    <th scope="col">Positive</th>
+                    <th scope="col">Energy</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <% if not @friends.nil? %>
+                <% @friends.each do |f| %>
+                        <tbody>
+                        <th scope="row"><%= RSpotify::User.find(f.friend_uid).display_name %></th>
+                        <% if User.find_by(spotify_uid: f.friend_uid)%>
+                                <% friend = User.find_by(spotify_uid: f.friend_uid) %>
+                                <td><%= friend.genre %></td>
+                                <td><%= friend.positive %></td>
+                                <td><%= friend.energy %></td>
+                        <% end %>
+                        <td><%= link_to 'del', "/friends/#{f.id}",method: :delete %></td>
+                        </tbody>
+                <% end %>
+            <% end %>    
+        </table>
+    </div>
 </div>

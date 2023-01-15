@@ -1,30 +1,44 @@
-<%= link_to "プレイリストとして保存", {controller: "top", action: "create_mytop_playlist"}, method: :post %>
-<% @my_top_tracks.each_with_index do |track, rank| %>
-    <div>    
-        <%= rank+1 %>
-        <%= track.name %>
-        <% audio_feature_data_json = RSpotify.get("https://api.spotify.com/v1/audio-features/#{track.id}") %>
-        energy: <%= audio_feature_data_json["energy"] %>
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/<%= track.id %>?utm_source=generator" width="15%" height="82" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        <div>
-            <% @track = track.name %>
-            <% @friends = Friend.to_uid_array(current_user) %>
-            <%= render 'request_form' %>
-        </div>
-    </div>
-<% end %>
-
-<% #自分と友達のトラックにランクで合わせて表示 %>
-<%= link_to "プレイリストとして保存", {controller: "top", action: "create_grouptop_playlist"}, method: :post %>
-<% @group_tracks = User.get_groups_top_tracks(current_user) %>
-<% if not @group_tracks.nil? %>
-    <% @group_tracks.each_with_index do |track, rank| %>
-        <div>
-            <%= rank+1 %>
-            points: <%= track[1] %>
-            <div>
-                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/<%= track[0] %>?utm_source=generator" width="15%" height="82" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+<% @sum_energy = 0 %>
+<% ary = [] %>
+<h1 class="text-white m-5">Top Tracks</h1>
+<div class="row align-items-start m-3 text-white">
+    <div class="col border border-primary p-3 m-2">
+        <h2>My Top Tracks</h2>
+        <%= link_to "プレイリストとして保存", {controller: "top", action: "create_mytop_playlist"}, method: :post %>
+        <% @my_top_tracks.each_with_index do |track, rank| %>
+            <div>    
+                <%= rank+1 %>
+                <% audio_feature_data_json = RSpotify.get("https://api.spotify.com/v1/audio-features/#{track.id}") %>
+                <% ary += track.artists.first.genres %>
+                <% @sum_energy += audio_feature_data_json["energy"].to_f %>
+                <div>
+                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/<%= track.id %>?utm_source=generator" width="100%" height="82" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                </div>
+                <% #リクエスト用 %>
+                <div>
+                    <% @track = track %>
+                    <%= render 'request_form' %>
+                </div>
             </div>
-        </div>
-    <% end %>
-<% end %>
+        <% end %>
+    </div>
+    <div class="col border border-primary p-3 m-2">
+        <% #自分と友達のトラックにランクで合わせて表示 %>
+        <h2>Group's Top Tracks</h2>
+        <%= link_to "プレイリストとして保存", {controller: "top", action: "create_grouptop_playlist"}, method: :post %>
+        <% @group_tracks.each_with_index do |track, rank| %>
+            <div>
+                <%= rank+1 %>
+                <div>
+                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/<%= track[0] %>?utm_source=generator" width="100%" height="82" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                </div>
+                <% #リクエスト用 %>
+                <div>
+                    <% @track = RSpotify::Track.find(track[0]) %>
+                    <%= render 'request_form' %>
+                </div>
+            </div>
+        <% end %>
+        <% @tracksize = @spotify_user.top_tracks.size() %>
+    </div>
+</div>
