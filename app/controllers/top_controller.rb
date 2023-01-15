@@ -2,7 +2,7 @@ require 'rspotify'
 class TopController < ApplicationController
 
     RSpotify.authenticate(ENV['SPOTIFY_CLIENT_ID'], ENV['SPOTIFY_SECRET_ID'])
-    #ログインsessionの判定、ユーザーモデルに登録されていればインスタンスを返して、なければcする。
+    #ログインsessionの判定、ユーザーモデルに登録されていればインスタンスを返して、なければ生成する。
     def main
         if session[:spotify_uid]
             @user = User.find_or_create_by!(spotify_uid: session[:spotify_uid])
@@ -13,27 +13,7 @@ class TopController < ApplicationController
     
     #spotifyのoauthでログインした後、ユーザーのステータスを返信したいから,ここにredirectさせる
     def user_update
-        ary = []
-        sum_energy = 0
-        sum_positive = 0
-        spotify_user = RSpotify::User.find(session[:spotify_uid])
-        
-        spotify_user.top_tracks(limit: 50, time_range: 'short_term').each_with_index do |track, rank|
-            
-            audio_feature_data_json = RSpotify.get("https://api.spotify.com/v1/audio-features/#{track.id}")
-            sum_energy += audio_feature_data_json["energy"].to_f
-            sum_positive += audio_feature_data_json["valence"].to_f
-            ary += track.artists.first.genres
-            
-        end
-        
-        tracksize = spotify_user.top_tracks.size()
-        average_energy = (sum_energy / tracksize * 100).round(0)
-        average_positive = (sum_positive / tracksize * 100).round(0)
-        favority_genre = ary.group_by(&:itself).max_by{|_, v| v.size}[0]
-        
-        User.find_by(spotify_uid: session[:spotify_uid]).update(energy: average_energy, positive: average_positive, genre: favority_genre)
-        
+        current_user.update_status_from_spotify
         redirect_to root_path
     end
     
@@ -42,58 +22,19 @@ class TopController < ApplicationController
         begin
             @spotify_user = RSpotify::User.find(session[:spotify_uid])
             @my_top_tracks = @spotify_user.top_tracks(limit: 50, time_range: 'short_term')
-            @group_tracks = get_groups_top_tracks(User.find_by(spotify_uid: session[:spotify_uid]))
-            @request = MusicRequest.new
+            @group_tracks = User.get_groups_top_tracks(current_user)
             #form用のfriends配列　[友達のspotify_uid...]
-            @friends = []
-            friends = Friend.where(uid: current_user.spotify_uid)
-            friends.each do |f|
-                @friends.push f.friend_uid
-            end
+            @request = MusicRequest.new
+            #@friends = current_user.friends.to_uid_array
+            @friends = Friend.all
+            @group_tracks = User.get_groups_top_tracks(current_user)
         rescue NameError
-            render 'login'
-        end
-    end
-    
-    def recommendations
-        @recommendations = RSpotify::Recommendations.generate(limit: 20, seed_genres: ['alt_rock'], seed_artists: ['4NHQUGzhtTLFvgF5SZesLK'], target_energy: 1.0)
-    end
-    
-    def login
-        
-    end
-    
-    def get_groups_top_tracks(user, get_uri=0)
-        result = {}
-        RSpotify::User.find(session[:spotify_uid]).top_tracks(limit: 50, time_range: 'short_term').each_with_index do |track, rank|
+            redirect_to '/auth/spotify'
+        rescue NoMethodError
             
-            if get_uri == 0
-                result.store(track.id, 50-rank)
-            elsif get_uri == 1
-                result.store(track.uri, 50-rank)
-            end
         end
-        puts result
-        Friend.where(uid: session[:spotify_uid]).each do |f|
-            begin
-                r = {}
-                if friend = RSpotify::User.find(f.friend_uid)
-                    friend.top_tracks(limit: 50, time_range: 'short_term').each_with_index do |track, rank|
-                        if get_uri == 0
-                            r.store(track.id, 50-rank)
-                        elsif get_uri == 1
-                            r.store(track.uri, 50-rank)
-                        end
-                    end
-                end
-                result.merge!(r) {|key, v0, v1| v0 + v1}
-            rescue NameError
-            end
-        end
-        result = result.sort_by { |_, v| v }
-        return result.reverse.slice(0..49)
     end
-    
+
     def create_mytop_playlist
         spotify_user = RSpotify::User.find(session[:spotify_uid])
         playlist = spotify_user.create_playlist!('Ranking')
@@ -104,7 +45,7 @@ class TopController < ApplicationController
     def create_grouptop_playlist
         spotify_user = RSpotify::User.find(session[:spotify_uid])
         playlist = spotify_user.create_playlist!('Group Ranking')
-        get_groups_top_tracks(User.find_by(spotify_uid: session[:spotify_uid]), 1).each do |track_uri|
+        User.get_groups_top_tracks(current_user, 1).each do |track_uri|
             playlist.add_tracks!([track_uri.first.to_s])
         end
         
