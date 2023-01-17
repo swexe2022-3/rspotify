@@ -1,18 +1,13 @@
-<% data = { "positive" => @user.positive, "energy" => @user.energy } %>
-<div class= center>
-    your favority genre  -> <%= @user.genre %>
-    <hr>
-    your positivity rate -> <%= @user.positive %>
-    <hr>
-    your energy rate     -> <%= @user.energy %>
-    <hr>
-    <%= bar_chart data, min: 1, max: 100 , width: "100%", height: "12%" %>
+<div class="text-white">
+    <h1 class="m-5">My Profile</h1>
+    <% data = { "positive" => @user.positive, "energy" => @user.energy } %>
+    <div class="m-5">
+        your favority genre> <%= @user.genre %>
+        <hr>
+        your positivity rate> <%= @user.positive %>
+        <hr>
+        your energy rate> <%= @user.energy %>
+        <hr>
+        <%= bar_chart data, min: 1, max: 100 , width: "75%", height: "12%" %>
+    </div>
 </div>
-<div>
-   
-</div>
-<div>
-   
-</div>
-
-

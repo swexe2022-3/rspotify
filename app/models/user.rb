@@ -48,12 +48,13 @@ class User < ApplicationRecord
     
     def self.get_groups_top_tracks(current_user, get_uri = 0)
         result = {}
-        RSpotify::User.find(current_user.spotify_uid).top_tracks(limit: 50, time_range: 'short_term').each_with_index do |track, rank|
+        music_limit = 10
+        RSpotify::User.find(current_user.spotify_uid).top_tracks(limit: music_limit, time_range: 'short_term').each_with_index do |track, rank|
             
             if get_uri == 0
-                result.store(track.id, 50-rank)
+                result.store(track.id, music_limit-rank)
             elsif get_uri == 1
-                result.store(track.uri, 50-rank)
+                result.store(track.uri, music_limit-rank)
             end
         end
         puts result
@@ -62,12 +63,12 @@ class User < ApplicationRecord
             begin
                 r = {}
                 if friend = RSpotify::User.find(f.f_spotify_uid)
-                    friend.top_tracks(limit: 50, time_range: 'short_term').each_with_index do |track, rank|
+                    friend.top_tracks(limit: music_limit, time_range: 'short_term').each_with_index do |track, rank|
                         
                         if get_uri == 0
-                            r.store(track.id, 50-rank)
+                            r.store(track.id, music_limit-rank)
                         elsif get_uri == 1
-                            r.store(track.uri, 50-rank)
+                            r.store(track.uri, music_limit-rank)
                         end
                         
                     end
@@ -79,7 +80,7 @@ class User < ApplicationRecord
             
         end
         result = result.sort_by { |_, v| v }
-        return result.reverse.slice(0..49)
+        return result.reverse.slice(0..music_limit-1)
     end
     
 end

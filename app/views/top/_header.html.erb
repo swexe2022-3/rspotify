@@ -1,21 +1,12 @@
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3" id="header">
     <div class="p-2 flex-grow-1 text-primary"><%= link_to "Spotify Rank", root_path %></div>
     <nav class="my-2 my-md-0 mr-md-3">
-        <button id="btnOpenMenu" class="btn btn-outline-primary dropdown-toggle m-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        User
-        </button>
-        <div class="dropdown-menu" aria-labelledby="btnOpenMenu">
-            <% if session[:spotify_uid] %>
-                <% user = User.find_or_create_by!(spotify_uid: session[:spotify_uid]) %>
-                <%= link_to 'recommendations','/top/recommendations', method: :get, class: "dropdown-item" %>
-                <%= link_to 'my profile', "/users/#{user.id}", method: :get, class: "dropdown-item" %>
-                <%= link_to 'notifications', "/notifications/#{user.id}", method: :get, class: "dropdown-item" %>
-            <% else %>
-                <%= link_to 'Please sign in', '/auth/spotify', method: :post, class: "dropdown-item" %>
-            <% end %>
-        </div>
-        <%= link_to 'Top Tracks','/top/top_tracks', method: :get, class: "btn btn-outline-primary m-1" %>
-        <%= link_to 'Friends','/friends', method: :get, class: "btn btn-outline-primary m-1" %>  
+        <% if session[:spotify_uid] %>
+            <% user = User.find_or_create_by!(spotify_uid: session[:spotify_uid]) %>
+            <%= link_to 'My Profile', "/users/#{user.id}", method: :get, class: "btn btn-outline-primary m-1" %>
+            <%= link_to 'Top Tracks','/top/top_tracks', method: :get, class: "btn btn-outline-primary m-1" %>
+            <%= link_to 'Friends','/friends', method: :get, class: "btn btn-outline-primary m-1" %>  
+        <% end %>
         <%= link_to 'Sign in with Spotify', '/auth/spotify', method: :post, class: "btn btn-primary m-1" %>
     </nav>
 </div>

@@ -21,7 +21,7 @@ class TopController < ApplicationController
         #アクセストークンの有効時間が切れたらNameErrorがでるのでrescue
         begin
             @spotify_user = RSpotify::User.find(session[:spotify_uid])
-            @my_top_tracks = @spotify_user.top_tracks(limit: 50, time_range: 'short_term')
+            @my_top_tracks = @spotify_user.top_tracks(limit: 10, time_range: 'short_term')
             @group_tracks = User.get_groups_top_tracks(current_user)
             #form用のfriends配列　[友達のspotify_uid...]
             @request = MusicRequest.new
@@ -38,7 +38,7 @@ class TopController < ApplicationController
     def create_mytop_playlist
         spotify_user = RSpotify::User.find(session[:spotify_uid])
         playlist = spotify_user.create_playlist!('Ranking')
-        playlist.add_tracks!(RSpotify::User.find(session[:spotify_uid]).top_tracks(limit: 50, time_range: 'short_term'))
+        playlist.add_tracks!(RSpotify::User.find(session[:spotify_uid]).top_tracks(limit: 10, time_range: 'short_term'))
         puts "OK"
     end
     

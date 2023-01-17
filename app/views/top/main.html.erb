@@ -1,5 +1,9 @@
-<% if session[:spotify_uid] %>
-    <%= link_to "Let's Check Top Tracks",'/top/top_tracks', method: :get, class: "btn btn-primary m-1" %>
-<% else %>
-    <%= link_to 'Sign in with Spotify', '/auth/spotify', method: :post, class: "btn btn-primary m-1" %>
-<% end %>
+<div class="m-5 text-white">
+    <% if session[:spotify_uid] %>
+        <h1>Welcome Back!</h1>
+        <%= link_to "Let's Check Top Tracks",'/top/top_tracks', method: :get, class: "btn btn-primary m-1" %>
+    <% else %>
+        <%= link_to 'Sign in with Spotify', '/auth/spotify', method: :post, class: "btn btn-primary m-1" %>
+    <% end %>
+</div>
+
