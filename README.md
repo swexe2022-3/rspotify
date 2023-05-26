@@ -4,8 +4,8 @@ RSpotify gemを利用したspotify apiによるwebアプリケーション.
 
 ## Specification
 
-- Ruby 3.1.2
-- Rails 7.0.4
+- Ruby 2.6.3
+- Rails 5.2.8
 
 ## Services 
 
