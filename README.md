@@ -8,9 +8,13 @@ RSpotify gemを利用したspotify apiによるwebアプリケーション.
 - Rails 7.0.4
 
 ## Services 
+
 -twitterのようなフォーロー機能
+
 -フォーローの人が最近聞いている曲と自分が最近聞いている曲のランキングをプレイリストとして表示
+
 -ランキングをspotifyのアカウントにプレイリストとして入れられる
+
 ## Deployment instructions
 
 ```bash
