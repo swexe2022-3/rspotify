@@ -6,6 +6,7 @@ RSpotify gemを利用したspotify apiによるwebアプリケーション.
 
 - Ruby 2.6.3
 - Rails 5.2.8
+- node.js と npm が必要です.
 
 ## Services 
 
@@ -18,5 +19,7 @@ RSpotify gemを利用したspotify apiによるwebアプリケーション.
 ## Deployment instructions
 
 ```bash
+$ bundle install
+$ rails db:migrate
 $ rails s
 ```
