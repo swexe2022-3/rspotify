@@ -7,6 +7,7 @@ RSpotify gemを利用したspotify apiによるwebアプリケーション.
 - Ruby 2.6.3
 - Rails 5.2.8
 - node.js と npm が必要です.
+- .envファイルにspotifyAPIから登録したキーを入力する必要があります.
 
 ## Services 
 
