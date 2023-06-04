@@ -17,6 +17,8 @@ RSpotify gemを利用したspotify apiによるwebアプリケーション.
 
 -ランキングをspotifyのアカウントにプレイリストとして入れられる
 
+-最近聞いている曲の状態がわかる
+
 ## Deployment instructions
 
 ```bash
