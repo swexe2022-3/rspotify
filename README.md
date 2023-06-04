@@ -19,7 +19,7 @@ RSpotify gemを利用したspotify apiによるwebアプリケーション.
 
 -最近聞いている曲の状態がわかる
 
--[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/Q0ouQ1K73oU/0.jpg)](https://www.youtube.com/watch?v=Q0ouQ1K73oU)
+-[![紹介動画](https://img.youtube.com/vi/Q0ouQ1K73oU/0.jpg)](https://www.youtube.com/watch?v=Q0ouQ1K73oU)
 
 ## Deployment instructions
 
